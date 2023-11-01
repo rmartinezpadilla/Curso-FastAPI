@@ -8,4 +8,3 @@ class Productos(BaseModel):
     precio_venta: float
     proveedor : str
 
-
