@@ -13,3 +13,12 @@ class Item(BaseModel):
     precio: float
     esta_en_oferta: Union[bool, None] = None
 
+@app.put('/items/{item_id}')
+def update_item(item_id: int, item:Item):
+    
+    if item.esta_en_oferta:
+        mensaje='El producto está en oferta'
+    else:
+        mensaje='El producto no está en oferta'
+    
+    return {'Id de item': item_id, 'Nombre de item': item.nombre, 'Precio': item.precio, 'Oferta': mensaje}
