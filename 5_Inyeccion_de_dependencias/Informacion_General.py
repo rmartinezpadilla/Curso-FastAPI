@@ -20,3 +20,8 @@ def hello_world(d: str = Depends(get_hello)):
     return d + ' world'
     
     """
+
+def poner_primeras_mayusculas(text_1: str, text_2:str):
+    return f"{text_1.capitalize()}, {text_2.capitalize()}"
+
+print(poner_primeras_mayusculas('ruben', 'martinez'))
