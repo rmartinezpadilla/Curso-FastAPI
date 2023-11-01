@@ -5,9 +5,6 @@ from fastapi import FastAPI
 #importamos BaseModel desde pydantic para poder crear el modelo de consulta
 from pydantic import BaseModel
 
-
-app = FastAPI()
-
 class Producto(BaseModel):
     nombre : str
     precio: float
