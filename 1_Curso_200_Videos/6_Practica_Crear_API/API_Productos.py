@@ -1,6 +1,6 @@
 #importar fastapi HTTP exception
 from fastapi import FastAPI, HTTPException
-from models.producto  import Productos
+from models.producto  import Producto
 #importamos uuid para los id automaticos
 from uuid import uuid4 as uuid
 #importamos las excepciones HTTP
@@ -40,7 +40,7 @@ def obtener_producto_por_id(producto_id: str):
     #return {'Mensaje': f'Producto con el id {producto_id} no encontrado'}
 
 @app.post('/crear_producto')
-def crear_producto(producto: Productos):
+def crear_producto(producto: Producto):
     producto.id_producto = str(uuid())
     lista_productos.append(producto)
     return {'Mensaje': f'Producto con el nombre:{producto.nombre_producto}  creado y agregado correctamente!'}
@@ -58,7 +58,7 @@ def eliminar_producto_por_id(producto_id : str):
     #return {'Mensaje': f'Producto con el id {producto_id} no encontrado'}
 
 @app.put('/actualizar_producto/{producto_id}')
-def actualizar_producto_por_id(producto_id : str, producto: Productos):
+def actualizar_producto_por_id(producto_id : str, producto: Producto):
     resultado = list(filter(lambda p : p.id_producto == producto_id, lista_productos))
     if len(resultado) > 0:
         producto_encontrado = lista_productos[0]
