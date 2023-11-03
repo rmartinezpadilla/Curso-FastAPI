@@ -25,7 +25,10 @@ async def get_phones():
 async def add_phone(cel : phone):
      #primero comprobamos si el telefono existe en la lista
    if type(serch_phone(cel.id)) == phone:
-      return {'Error':f'El telfono {cel.marca} con id {cel.id} ya existe en la lista'}
+       # Creamo una respuesta al error de respues 204
+       # return HTTPException(status_code=204, detail=f'El telfono {cel.marca} con id {cel.id} ya existe en la lista')
+       raise HTTPException(status_code=404, detail=f'El telfono {cel.marca} con id {cel.id} ya existe en la lista')
+      #return {'Error':f'El telfono {cel.marca} con id {cel.id} ya existe en la lista'}
    else:
       list_phone.append(cel)
       return {'Mensaje' :  cel}
