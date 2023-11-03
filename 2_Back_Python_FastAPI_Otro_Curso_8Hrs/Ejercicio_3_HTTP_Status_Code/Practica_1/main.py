@@ -2,8 +2,6 @@ from fastapi import FastAPI
 #importamos la clase celular
 from model.celular import Celular as phone
 
-
-
 # Instanciamos la clase FastAPI
 app = FastAPI()
 
@@ -14,7 +12,30 @@ list_phone = []
 async def root():
     return {'Mensaje' : 'Bienvenido'}
 
-@app.post('/phone')
+@app.get('/phones/')
+async def get_phones():
+    #if len(list_phone) == 0:
+    if not bool(list_phone):
+        return {'Mensaje':'Lista vacía'}
+    else:        
+        return {'Telefonos' : list_phone}
+
+@app.post('/phone/')
 async def add_phone(cel : phone):
-    list_phone.append(cel)
-    return {cel}
+     #primero comprobamos si el telefono existe en la lista
+   if type(serch_phone(cel.id)) == phone:
+      return {'Error':f'El telfono {cel.marca} con id {cel.id} ya existe en la lista'}
+   else:
+      list_phone.append(cel)
+      return {'Mensaje' :  cel}
+      
+
+#tambien se pueden crear métodos que se usen en diferentes petidiciones
+#creamos un método
+def serch_phone(id : int):
+    #funcion de orde superior
+   resultado = filter(lambda phone: phone.id == id, list_phone)
+   try:
+    return list(resultado)[0]
+   except:
+    return {'Mensaje':'No se ha encontrado al usuario'}
