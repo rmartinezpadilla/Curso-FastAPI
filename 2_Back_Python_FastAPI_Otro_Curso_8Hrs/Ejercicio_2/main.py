@@ -47,9 +47,18 @@ async def user(ced : int):
 #     return {'Mensaje':'No se ha encontrado al usuario'}
     return serch_user(ced)
 
+@app.post('/agregar_usuario/')
+def add_user(param_usr : usr):
+   #primero comprobamos si el usuario existe en la lista
+   if type(serch_user(param_usr.cedula)) == usr:
+      return {'Error':f'El usuario {param_usr.nombres} con cédula {param_usr.cedula} ya existe en la lista'}
+   else:
+      user_list.append(param_usr)
+       
+   
+
 #tambien se pueden crear métodos que se usen en diferentes petidiciones
 #creamos un método
-
 def serch_user(ced: int):
     #funcion de orde superior
    resultado = filter(lambda usr: usr.cedula == ced, user_list)
