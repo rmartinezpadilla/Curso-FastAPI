@@ -24,6 +24,7 @@ async def users():
    return user_list
 
 # Pedir el dato por el path
+# Cuando un dato se pide por el path es obligatorio
 @app.get('/user/{user_id}')
 async def user(ced : int):    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
