@@ -63,7 +63,8 @@ async def update_user(param_usr :usr):
       if dato.cedula == param_usr.cedula:
          user_list[index] = param_usr
          estado = True
-         return{'Mensaje' : f'Usuario {dato.nombres} actualizado correctamente!'}
+         #return{'Mensaje' : f'Usuario {dato.nombres} actualizado correctamente!'}
+         return param_usr
    
    if estado == False:
       return {'Error':f'No se ha encontrado al usuario con cédula {param_usr.cedula}'}
