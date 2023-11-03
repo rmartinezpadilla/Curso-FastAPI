@@ -17,4 +17,4 @@ async def root():
 @app.post('/phone')
 async def add_phone(cel : phone):
     list_phone.append(cel)
-    return[cel]
+    return {cel}
