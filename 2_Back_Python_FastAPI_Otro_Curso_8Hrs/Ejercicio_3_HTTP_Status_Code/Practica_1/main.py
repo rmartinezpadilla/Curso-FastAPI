@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+#importmos fasta aí y HTTPException
+from fastapi import FastAPI, HTTPException
 #importamos la clase celular
 from model.celular import Celular as phone
 
@@ -20,7 +21,7 @@ async def get_phones():
     else:        
         return {'Telefonos' : list_phone}
 
-@app.post('/phone/')
+@app.post('/phone/', status_code=201)
 async def add_phone(cel : phone):
      #primero comprobamos si el telefono existe en la lista
    if type(serch_phone(cel.id)) == phone:
