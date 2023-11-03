@@ -47,15 +47,27 @@ async def user(ced : int):
 #     return {'Mensaje':'No se ha encontrado al usuario'}
     return serch_user(ced)
 
-@app.post('/agregar_usuario/')
-def add_user(param_usr : usr):
+@app.post('/add_user/')
+async def add_user(param_usr : usr):
    #primero comprobamos si el usuario existe en la lista
    if type(serch_user(param_usr.cedula)) == usr:
       return {'Error':f'El usuario {param_usr.nombres} con cédula {param_usr.cedula} ya existe en la lista'}
    else:
       user_list.append(param_usr)
        
+@app.put('/update_user')
+async def update_user(param_usr :usr):
+   estado = False
    
+   for index, dato in enumerate(user_list):
+      if dato.cedula == param_usr.cedula:
+         user_list[index] = param_usr
+         estado = True
+         return{'Mensaje' : f'Usuario {dato.nombres} actualizado correctamente!'}
+   
+   if estado == False:
+      return {'Error':f'No se ha encontrado al usuario con cédula {param_usr.cedula}'}
+
 
 #tambien se pueden crear métodos que se usen en diferentes petidiciones
 #creamos un método
