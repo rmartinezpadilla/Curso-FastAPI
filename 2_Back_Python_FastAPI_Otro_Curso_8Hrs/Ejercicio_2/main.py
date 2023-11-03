@@ -21,7 +21,10 @@ async def root():
 @app.get('/users')
 async def users():    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
-   return user_list
+   if len(user_list) > 0:
+      return user_list
+   else:
+      return {'Mensaje':'lista vacía'}
 
 # Pedir el dato por el path
 # Cuando un dato se pide por el path es obligatorio
@@ -56,7 +59,7 @@ async def add_user(param_usr : usr):
    else:
       user_list.append(param_usr)
        
-@app.put('/update_user')
+@app.put('/update_user/')
 async def update_user(param_usr :usr):
    estado = False
    
@@ -70,6 +73,14 @@ async def update_user(param_usr :usr):
    if estado == False:
       return {'Error':f'No se ha encontrado al usuario con cédula {param_usr.cedula}'}
 
+@app.delete('/delete_user/{cedula}')
+async def delete_user(ced : int):
+   for dato in user_list:
+      if dato.cedula == ced:
+         user_list.remove(dato)   
+         return {'Resultado' : 'Usuario eliminado'}
+   else:
+      return {'Resultado' : 'No existe el usuario'}
 
 #tambien se pueden crear métodos que se usen en diferentes petidiciones
 #creamos un método
