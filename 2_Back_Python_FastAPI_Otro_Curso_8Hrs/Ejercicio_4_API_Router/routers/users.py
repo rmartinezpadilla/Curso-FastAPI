@@ -1,7 +1,27 @@
 from fastapi import APIRouter, HTTPException
 from model.usuario import Usuario as usr
 
-router = APIRouter()
+# Agregamos el parametro prefix='/users' dentro de la instancia APIRouter para no repetirlo en cada path que se cree
+#Ejemplo
+"""    router =  APIRouter(prefix='/users')
+"""
+# Para personalizar cada api dentro de la instancia de APIRouter tambien se agregan los siguientes parametros generales
+#Ejemplo
+"""
+router =  APIRouter(prefix='/users', tags=['Users']} )
+"""
+
+# Para generalizar una respuesta de error dentro de la API escribimos
+# dentro de la instancia de APIRouter tambien se agregan los siguientes parametros generales
+#Ejemplo
+"""
+router =  APIRouter(responses={404 : {'Mensaje' : 'No encontrado'}})
+"""
+
+# ------------------------- IMPORTANTE ---------------------
+# Nos queda de la siguiente manera
+
+router = APIRouter(prefix='/users', tags=['Users'], responses={404 : {'mensaje' : 'No encontrado'}})
 
 #Iniciar el servidor: uvicorn archivo:route --reload
 #Detener el servidor: CTRL + C
@@ -18,7 +38,7 @@ user_list_II = []
 # async def root():       
 #    return {'Mensaje':'Bienvenidos a esta API de practica'}
 
-@router.get('/users')
+@router.get('/')
 async def users():    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
    if len(user_list) > 0:
@@ -28,7 +48,7 @@ async def users():
 
 # Pedir el dato por el path
 # Cuando un dato se pide por el path es obligatorio
-@router.get('/user/{user_id}')
+@router.get('/{user_id}')
 async def user(ced : int):    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
    #funcion de orde superior
@@ -40,7 +60,7 @@ async def user(ced : int):
     return serch_user(ced)
 
 # Pedir el dato por una query    
-@router.get('/userquery/')
+@router.get('/')
 async def user(ced : int):    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
    #funcion de orde superior
@@ -51,7 +71,7 @@ async def user(ced : int):
 #     return {'Mensaje':'No se ha encontrado al usuario'}
     return serch_user(ced)
 
-@router.post('/add_user/',status_code=201, response_model=usr)
+@router.post('/',status_code=201, response_model=usr)
 async def add_user(param_usr : usr):
    #primero comprobamos si el usuario existe en la lista
    if type(serch_user(param_usr.cedula)) == usr:
@@ -61,7 +81,7 @@ async def add_user(param_usr : usr):
       user_list.append(param_usr)
       return param_usr
        
-@router.put('/update_user/')
+@router.put('/')
 async def update_user(param_usr :usr):
    estado = False
    
@@ -77,7 +97,7 @@ async def update_user(param_usr :usr):
 
 
 # Cuando se crea un parametro por el path dentro del método se debe llamar igual 
-@router.delete('/delete_user/{cedula}')
+@router.delete('/{cedula}')
 async def delete_user(cedula : int):
    for dato in user_list:
       if dato.cedula == cedula:
