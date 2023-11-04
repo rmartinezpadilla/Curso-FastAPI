@@ -79,8 +79,8 @@ async def delete_user(ced : int):
       if dato.cedula == ced:
          user_list.remove(dato)   
          return {'Resultado' : 'Usuario eliminado'}
-   else:
-      return {'Resultado' : 'No existe el usuario'}
+      else:
+         return {'Resultado' : 'No existe el usuario'}
 
 #tambien se pueden crear métodos que se usen en diferentes petidiciones
 #creamos un método
