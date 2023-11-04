@@ -1,9 +1,29 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, HTTPException
 from model.usuario import Usuario as usr
 
-app = FastAPI()
+# Agregamos el parametro prefix='/users' dentro de la instancia APIRouter para no repetirlo en cada path que se cree
+#Ejemplo
+"""    router =  APIRouter(prefix='/users')
+"""
+# Para personalizar cada api dentro de la instancia de APIRouter tambien se agregan los siguientes parametros generales
+#Ejemplo
+"""
+router =  APIRouter(prefix='/users', tags=['Users']} )
+"""
 
-#Iniciar el servidor: uvicorn archivo:app --reload
+# Para generalizar una respuesta de error dentro de la API escribimos
+# dentro de la instancia de APIRouter tambien se agregan los siguientes parametros generales
+#Ejemplo
+"""
+router =  APIRouter(responses={404 : {'Mensaje' : 'No encontrado'}})
+"""
+
+# ------------------------- IMPORTANTE ---------------------
+# Nos queda de la siguiente manera
+
+router = APIRouter(prefix='/users', tags=['Users'], responses={404 : {'mensaje' : 'No encontrado'}})
+
+#Iniciar el servidor: uvicorn archivo:route --reload
 #Detener el servidor: CTRL + C
 
 user_list = [usr(cedula=987, nombres = "Juan", apellidos= "Marín", direccion= "Pradera"),
@@ -14,11 +34,11 @@ user_list = [usr(cedula=987, nombres = "Juan", apellidos= "Marín", direccion= "
 
 user_list_II = []
 
-@app.get('/')
-async def root():       
-   return {'Mensaje':'Bienvenidos a esta API de practica'}
+# @route.get('/')
+# async def root():       
+#    return {'Mensaje':'Bienvenidos a esta API de practica'}
 
-@app.get('/users')
+@router.get('/')
 async def users():    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
    if len(user_list) > 0:
@@ -28,7 +48,7 @@ async def users():
 
 # Pedir el dato por el path
 # Cuando un dato se pide por el path es obligatorio
-@app.get('/user/{user_id}')
+@router.get('/{user_id}')
 async def user(ced : int):    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
    #funcion de orde superior
@@ -40,7 +60,7 @@ async def user(ced : int):
     return serch_user(ced)
 
 # Pedir el dato por una query    
-@app.get('/userquery/')
+@router.get('/')
 async def user(ced : int):    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
    #funcion de orde superior
@@ -51,15 +71,17 @@ async def user(ced : int):
 #     return {'Mensaje':'No se ha encontrado al usuario'}
     return serch_user(ced)
 
-@app.post('/add_user/')
+@router.post('/',status_code=201, response_model=usr)
 async def add_user(param_usr : usr):
    #primero comprobamos si el usuario existe en la lista
    if type(serch_user(param_usr.cedula)) == usr:
-      return {'Error':f'El usuario {param_usr.nombres} con cédula {param_usr.cedula} ya existe en la lista'}
+      #return {'Error':f'El usuario {param_usr.nombres} con cédula {param_usr.cedula} ya existe en la lista'}
+      raise HTTPException(status_code=404, detail=f'El usuario con {param_usr.cedula} con nombre {param_usr.nombres} ya existe en la lista')
    else:
       user_list.append(param_usr)
+      return param_usr
        
-@app.put('/update_user/')
+@router.put('/')
 async def update_user(param_usr :usr):
    estado = False
    
@@ -71,19 +93,21 @@ async def update_user(param_usr :usr):
          return param_usr
    
    if estado == False:
-      return {'Error':f'No se ha encontrado al usuario con cédula {param_usr.cedula}'}
+      return {'Error': f'No se ha encontrado al usuario con cédula {param_usr.cedula}'}
 
-@app.delete('/delete_user/{cedula}')
-async def delete_user(ced : int):
+
+# Cuando se crea un parametro por el path dentro del método se debe llamar igual 
+@router.delete('/{cedula}')
+async def delete_user(cedula : int):
    for dato in user_list:
-      if dato.cedula == ced:
+      if dato.cedula == cedula:
          user_list.remove(dato)   
          return {'Resultado' : 'Usuario eliminado'}
       else:
          return {'Resultado' : 'No existe el usuario'}
 
-#tambien se pueden crear métodos que se usen en diferentes petidiciones
-#creamos un método
+# Tambien se pueden crear métodos que se usen en diferentes peticiones
+# Creamos un método
 def serch_user(ced: int):
     #funcion de orde superior
    resultado = filter(lambda usr: usr.cedula == ced, user_list)

@@ -1,10 +1,12 @@
 from pydantic import BaseModel
 
 class Celular(BaseModel):
-    peso : int
+    id : int
+    peso : float
     color : str
+    marca : str
     operador : str
-    dimesion_x : int
-    dimesion_y : int
+    dimesion_x : float
+    dimesion_y : float
     
     
