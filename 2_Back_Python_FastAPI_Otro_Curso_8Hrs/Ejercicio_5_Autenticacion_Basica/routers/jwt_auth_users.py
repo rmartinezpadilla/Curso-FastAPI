@@ -112,6 +112,6 @@ async def current_user(user : Usuario = Depends(auth_user)):
                             detail='Usuario inactivo')
     return user
 
-@router.get('/users/me')
+@router.get('/users/meI')
 async def me(user : Usuario = Depends(current_user)):
     return user

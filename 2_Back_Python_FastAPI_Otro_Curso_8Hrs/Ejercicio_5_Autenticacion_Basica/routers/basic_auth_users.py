@@ -70,7 +70,7 @@ async def current_user(token : str = Depends(oauth2)):
 #Implementamos la autenticacion   
 # Le pasamos como parametro en del path el mismo valor que le pusimos en la 
     # instancia de la clase OAuth2PasswordBearer, es decir, 'login'
-@router.post('/login')
+@router.post('/loginI')
 async def login(form : OAuth2PasswordRequestForm = Depends()):
     user_db = users_db.get(form.username)
     
@@ -84,7 +84,7 @@ async def login(form : OAuth2PasswordRequestForm = Depends()):
     
     return {'access_token' : user.username, 'token_type' : 'bearer'}
 
-@router.get('/users/me')
+@router.get('/usersI/me')
 async def me(user : Usuario = Depends(current_user)):
     return user
         
