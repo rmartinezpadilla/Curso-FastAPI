@@ -39,7 +39,7 @@ user_list = []
 @router.get('/', response_model=list[usr])
 async def Allusers():    
    # return {usr(cedula = 98521, nombres = "Juan", apellidos = "PEREZ", direccion="Pradera")}
-   users = db_client.Ejercicio.Usuario.find()   
+   users = db_client.Usuario.find()   
    return users_schema(users)
    # if len(user_list) > 0:
    #    return user_list
@@ -97,10 +97,10 @@ async def add_user(param_usr : usr):
       #eliminar el campo id
       del user_dict['id']
       #obtenemos el ID
-      id = db_client.Ejercicio.Usuario.insert_one(user_dict).inserted_id
+      id = db_client.Usuario.insert_one(user_dict).inserted_id
       
       #accedemos a la base de datos para obtener al usuario
-      new_user = user_schema(db_client.Ejercicio.Usuario.find_one({'_id' : id}))
+      new_user = user_schema(db_client.Usuario.find_one({'_id' : id}))
       
       # transformamos la respuesta a un Usuario y lo retornamos
       
@@ -113,7 +113,7 @@ async def update_user(usuario : usr):
    del user_dict['id']
    
    try:      
-      db_client.Ejercicio.Usuario.find_one_and_replace({'_id' :  ObjectId(usuario.id)}, user_dict)
+      db_client.Usuario.find_one_and_replace({'_id' :  ObjectId(usuario.id)}, user_dict)
    except:
       return {'Error': 'No se ha actualizado el usuario.'}
    
@@ -128,7 +128,7 @@ async def delete_user(id : str):
    #       return {'Resultado' : 'Usuario eliminado'}
    #    else:
    #       return {'Resultado' : 'No existe el usuario'}
-   found = db_client.Ejercicio.Usuario.find_one_and_delete({'_id' :  ObjectId(id)})
+   found = db_client.Usuario.find_one_and_delete({'_id' :  ObjectId(id)})
    
    if not found:
       return{'Error' : f'No existe el id {id}'}
@@ -141,10 +141,10 @@ async def delete_user(cedula : int):
    #       return {'Resultado' : 'Usuario eliminado'}
    #    else:
    #       return {'Resultado' : 'No existe el usuario'}
-   found = db_client.Ejercicio.Usuario.find_one_and_delete({'cedula' : cedula})
+   found = db_client.Usuario.find_one_and_delete({'cedula' : cedula})   
    
-   if not found:
-      return{'Error' : f'No existe el id {id}'}   
+   if found is None:
+      return{'Error' : f'No existe el usuario con cédula {cedula}'}   
 
 # Tambien se pueden crear métodos que se usen en diferentes peticiones
 # Creamos un método
@@ -152,7 +152,7 @@ def search_user(field: str, key):
     #funcion de orde superior
    #resultado = filter(lambda usr: usr.cedula == ced, user_list)
    try:
-    user = db_client.Ejercicio.Usuario.find_one({field: key})
+    user = db_client.Usuario.find_one({field: key})
     return usr(**user_schema(user))
    except:
     return {'Mensaje':'No se ha encontrado al usuario'}
