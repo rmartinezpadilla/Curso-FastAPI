@@ -11,7 +11,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_DURATION = 1
 SECRET = '5b1638be027fe9f7904b6a1b55838674'
 
-router = APIRouter()
+router = APIRouter(prefix='/crypt', tags=['Encriptacion JWT'])
 
 # Creamos instancia del sistema de autenticacion estandar de fastAPI
 # le pasamos como paramtros el atributo tokenUrl = "login "---- Importante
@@ -112,6 +112,6 @@ async def current_user(user : Usuario = Depends(auth_user)):
                             detail='Usuario inactivo')
     return user
 
-@router.get('/users/meI')
+@router.get('/users/me')
 async def me(user : Usuario = Depends(current_user)):
     return user

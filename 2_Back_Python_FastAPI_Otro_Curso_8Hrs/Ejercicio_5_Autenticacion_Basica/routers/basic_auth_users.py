@@ -4,7 +4,7 @@ from pydantic import BaseModel
 # Importamos el modulo de seguridad de fastapi
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-router = APIRouter()
+router = APIRouter(prefix='/basiccrypt', tags=['Basic Crypt'])
 
 # Creamos instancia del sistema de autenticacion estandar de fastAPI
 # le pasamos como paramtros el atributo tokenUrl = "login "---- Importante
@@ -70,7 +70,7 @@ async def current_user(token : str = Depends(oauth2)):
 #Implementamos la autenticacion   
 # Le pasamos como parametro en del path el mismo valor que le pusimos en la 
     # instancia de la clase OAuth2PasswordBearer, es decir, 'login'
-@router.post('/loginI')
+@router.post('/login')
 async def login(form : OAuth2PasswordRequestForm = Depends()):
     user_db = users_db.get(form.username)
     
@@ -84,7 +84,7 @@ async def login(form : OAuth2PasswordRequestForm = Depends()):
     
     return {'access_token' : user.username, 'token_type' : 'bearer'}
 
-@router.get('/usersI/me')
+@router.get('/users/me')
 async def me(user : Usuario = Depends(current_user)):
     return user
         
