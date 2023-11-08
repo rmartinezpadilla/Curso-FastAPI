@@ -1,0 +1,7 @@
+python3 -m venv venv
+
+2- activar entorno virtual
+    - acceder la ruta/ven/scripts/activate
+    - ./venv/Scripts/activate
+
+3- python.exe - pip install --upgrade pip
