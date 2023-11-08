@@ -1,7 +1,17 @@
 python3 -m venv venv
 
-2- activar entorno virtual
+2- Activar entorno virtual
     - acceder la ruta/ven/scripts/activate
     - ./venv/Scripts/activate
 
-3- python.exe - pip install --upgrade pip
+3- prueba de instalacion de paquetes al entorno virtual
+    - python.exe - pip install --upgrade pip
+
+4- Extraer requerimientos
+    - pip freeze > requirements.txt
+
+5- Desactivar entorno virtua
+    - desactivate (en consola)
+
+6- INstalar requirements.txt en otro entorno virtual
+    - pip install -r (ruta de requirements.txt -> ejemplo ) .\requirements.txt
