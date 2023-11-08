@@ -1,0 +1,12 @@
+1-  conexion a la base de datos
+
+SQLAlchemy -  Objetc relacional Mapper
+    - Usa biblitoteca PySQL de python
+
+
+
+2- instalar SQLAlchemy
+    - pip install sqlalchemy
+
+3- Instalar PyMySQL
+    - pip install pymysql
