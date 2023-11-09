@@ -10,3 +10,25 @@ SQLAlchemy -  Objetc relacional Mapper
 
 3- Instalar PyMySQL
     - pip install pymysql
+
+
+# COMENTARIOS DEL CURSO EN INGLÉS
+comandos FastAPI myAQL REST SQLAlchemy
+-----------------
+Entorno virtual
+-----------------
+virtualenv env
+source venv/Scripts/activate
+-----------------
+Liberías
+-----------------
+pip install fastapi sqlalchemy pymysql uvicorn
+
+-----------------
+Estructura del proyecto
+-----------------
+- config
+	-db.py (cuando el usuario de la bd no tiene contraseña se deja vacio)
+- models
+- schemas
+-routers
